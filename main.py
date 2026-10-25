@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
 import models
 from database import engine, get_db
@@ -7,7 +8,6 @@ from schemas import BarangCreate, BarangUpdate
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="API Sistem Kasir Toko", version="1.0.0")
-from fastapi.responses import Response
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
