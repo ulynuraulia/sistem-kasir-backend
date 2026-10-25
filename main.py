@@ -5,7 +5,12 @@ import models
 from database import engine, get_db
 from schemas import BarangCreate, BarangUpdate
 
-models.Base.metadata.create_all(bind=engine)
+# Hapus atau nonaktifkan create_all di Vercel jika tabel Supabase sudah dibuat manual,
+# atau biarkan aman dengan try-except agar tidak bikin 500 error saat start:
+try:
+    models.Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"Database connection notice: {e}")
 
 app = FastAPI(title="API Sistem Kasir Toko", version="1.0.0")
 
