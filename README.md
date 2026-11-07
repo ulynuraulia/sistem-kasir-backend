@@ -1,38 +1,55 @@
 # Sistem Kasir Toko - Backend API
 
-REST API untuk sistem kasir toko yang dibangun menggunakan **Python (FastAPI)** dan **PostgreSQL**. Project ini dibuat untuk memenuhi Tugas Akhir Learning Labs Backend Development.
+## 1. Deskripsi Proyek
+Sistem Kasir Toko API adalah aplikasi REST API yang digunakan untuk mengelola data kategori barang, barang, kasir, transaksi, dan detail transaksi. Aplikasi dibuat menggunakan Python dengan framework FastAPI dan database PostgreSQL.
+Proyek ini menerapkan operasi CRUD (Create, Read, Update, Delete) dan di-deploy menggunakan Vercel agar dapat diakses secara online.
 
-## 📊 Skema Database (5 Tabel)
-Project ini menggunakan 5 tabel relasional yang saling berelasi:
-1. `kategori` - Master kategori barang
-2. `barang` - Data barang (Foreign Key ke `kategori`)
-3. `kasir` - Data akun kasir
-4. `transaksi` - Header riwayat transaksi (Foreign Key ke `kasir`)
-5. `detail_transaksi` - Tabel pivot / relasi many-to-many antara `transaksi` dan `barang`
+## 2. Teknologi yang Digunakan
+- Python
+- FastAPI
+- PostgreSQL
+- Vercel sebagai platform deployment
+- Git dan GitHub
+- Swagger UI untuk pengujian API
 
-## 🚀 Link Deployment
-- **URL Vercel:** *(Akan diisi setelah deploy ke Vercel)*
-- **Dokumentasi Otomatis (Swagger):** `https://nama-project.vercel.app/docs`
+## 3. Struktur Database
+Database terdiri dari lima tabel:
+1. **kategori**: menyimpan ID kategori dan nama kategori.
+2. **barang**: menyimpan ID barang, ID kategori (Foreign Key), nama barang, harga satuan, dan stok.
+3. **kasir**: menyimpan ID kasir, nama kasir, dan username.
+4. **transaksi**: menyimpan ID transaksi, ID kasir (Foreign Key), tanggal transaksi, dan total harga.
+5. **detail_transaksi**: menyimpan ID detail, ID transaksi (Foreign Key), ID barang (Foreign Key), jumlah beli, dan subtotal.
 
----
+### Relasi Antar Tabel
+- `kategori` berelasi dengan `barang` melalui `id_kategori`.
+- `kasir` berelasi dengan `transaksi` melalui `id_kasir`.
+- `transaksi` berelasi dengan `detail_transaksi` melalui `id_transaksi`.
+- `barang` berelasi dengan `detail_transaksi` melalui `id_barang`.
 
-## 📄 Daftar Endpoint API
+## 4. Daftar Endpoint API
+| Metode | Endpoint | Fungsi |
+|---|---|---|
+| GET | / | Memeriksa status server API |
+| GET | /barang | Menampilkan seluruh daftar barang |
+| POST | /barang | Menambahkan data barang baru |
+| GET | /barang/{id_barang} | Menampilkan detail barang berdasarkan ID |
+| PUT | /barang/{id_barang} | Memperbarui data barang |
+| DELETE | /barang/{id_barang} | Menghapus data barang |
 
-### 1. Ambil Seluruh Daftar Barang (`getDaftarBarang`)
-- **Method** : `GET`
-- **URL** : `https://nama-project.vercel.app/barang`
-- **Deskripsi** : Menampilkan seluruh daftar barang yang tersedia.
-- **Response Sukses (200)**:
-  ```json
-  {
-    "message": "Berhasil mengambil daftar barang",
-    "data": [
-      {
-        "id_barang": 1,
-        "id_kategori": 1,
-        "nama_barang": "Minyak Goreng 1L",
-        "harga_satuan": 18000,
-        "stok": 50
-      }
-    ]
-  }
+## 5. URL Proyek
+- **GitHub Repository:** 
+https://github.com/ulynuraulia/sistem-kasir-backend
+- **Deployment URL:** 
+https://sistem-kasir-backend.vercel.app/
+- **Dokumentasi API:** 
+https://sistem-kasir-backend.vercel.app/docs
+
+## 6. Cara Menjalankan API Secara Lokal
+### Persyaratan
+- Python
+- Git
+- Database PostgreSQL yang dapat diakses
+### Langkah Menjalankan
+1. Clone repositori GitHub:
+```bash
+git clone [https://github.com/ulynuraulia/sistem-kasir-backend.git](https://github.com/ulynuraulia/sistem-kasir-backend.git)
