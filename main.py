@@ -50,8 +50,18 @@ class BarangUpdate(BaseModel):
 class DetailTransaksiCreate(BaseModel):
     id_barang: int
     jumlah: int
-    harga_saat_ini: float
+    harga_saat_ini: Optional[float] = None
+    harga_satuan: Optional[float] = None
     subtotal: float
+
+    @property
+    def get_harga(self) -> float:
+        # Mengambil nilai dari field apa pun yang diisi oleh Swagger UI
+        if self.harga_saat_ini is not None:
+            return self.harga_saat_ini
+        if self.harga_satuan is not None:
+            return self.harga_satuan
+        return 0.0
 
 class TransaksiCreate(BaseModel):
     id_kasir: int
@@ -117,7 +127,6 @@ def update_barang(id_barang: int, data: BarangUpdate):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Cek apakah barang ada
     cursor.execute("SELECT * FROM barang WHERE id_barang = %s;", (id_barang,))
     barang_lama = cursor.fetchone()
     if not barang_lama:
@@ -179,10 +188,10 @@ def buat_transaksi(data: TransaksiCreate):
         for item in data.detail:
             cursor.execute(
                 """
-                INSERT INTO detail_transaksi (id_transaksi, id_barang, jumlah, harga_saat_ini, subtotal)
+                INSERT INTO detail_transaksi (id_transaksi, id_barang, jumlah, harga_satuan, subtotal)
                 VALUES (%s, %s, %s, %s, %s);
                 """,
-                (id_transaksi, item.id_barang, item.jumlah, item.harga_saat_ini, item.subtotal)
+                (id_transaksi, item.id_barang, item.jumlah, item.get_harga, item.subtotal)
             )
             # Mengurangi stok barang secara otomatis
             cursor.execute(
